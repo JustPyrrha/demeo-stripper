@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -7,7 +6,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using SimpleJSON;
 
-namespace BeatStripper
+namespace DemeoStripper
 {
     internal class BSIPA
     {
@@ -19,7 +18,7 @@ namespace BeatStripper
 
         private static async Task<string> GetReleaseURLAsync()
         {
-            client.DefaultRequestHeaders.Add("User-Agent", "BeatStripper");
+            client.DefaultRequestHeaders.Add("User-Agent", "DemeoStripper");
             string url = $"https://api.github.com/repos/{RepoSlug}/releases/latest";
 
             HttpResponseMessage resp = await client.GetAsync(url);
