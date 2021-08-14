@@ -12,21 +12,12 @@ namespace DemeoStripper
 
     internal class InstallDir
     {
-        internal const string BeatSaberAPPID = "620980";
-        internal const string BeatSaberEXE = "Beat Saber.exe";
-        internal const string IPA_EXE = "IPA.exe";
+        private const string DemeoAppId = "1484280";
+        internal const string DemeoExe = "demeo.exe";
 
         public static string GetInstallDir()
         {
             string InstallDir = null;
-
-            if (!string.IsNullOrEmpty(InstallDir)
-                && Directory.Exists(InstallDir)
-                && Directory.Exists(Path.Combine(InstallDir, "Beat Saber_Data", "Plugins"))
-                && File.Exists(Path.Combine(InstallDir, "Beat Saber.exe")))
-            {
-                return InstallDir;
-            }
 
             try
             {
@@ -39,7 +30,7 @@ namespace DemeoStripper
 
             try
             {
-                InstallDir = GetOculusDir();
+                // InstallDir = GetOculusDir(); @todo: do this
             }
             catch { }
 
@@ -84,9 +75,9 @@ namespace DemeoStripper
             regex = new Regex("\\s\"installdir\"\\s+\"(.+)\"");
             foreach (string path in SteamPaths)
             {
-                if (File.Exists(Path.Combine(@path, @"appmanifest_" + BeatSaberAPPID + ".acf")))
+                if (File.Exists(Path.Combine(@path, @"appmanifest_" + DemeoAppId + ".acf")))
                 {
-                    using (StreamReader reader = new StreamReader(Path.Combine(@path, @"appmanifest_" + BeatSaberAPPID + ".acf")))
+                    using (StreamReader reader = new StreamReader(Path.Combine(@path, @"appmanifest_" + DemeoAppId + ".acf")))
                     {
                         string line;
                         while ((line = reader.ReadLine()) != null)
@@ -94,7 +85,7 @@ namespace DemeoStripper
                             Match match = regex.Match(line);
                             if (match.Success)
                             {
-                                if (File.Exists(Path.Combine(@path, @"common", match.Groups[1].Value, "Beat Saber.exe")))
+                                if (File.Exists(Path.Combine(@path, @"common", match.Groups[1].Value, DemeoExe)))
                                 {
                                     return Path.Combine(@path, @"common", match.Groups[1].Value);
                                 }

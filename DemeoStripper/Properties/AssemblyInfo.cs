@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("DemeoStripper")]
-[assembly: AssemblyDescription("Generate stripped Beat Saber DLLs for use in CI")]
+[assembly: AssemblyDescription("Generate stripped Demeo DLLs for use in CI")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Jack Baron DEV")]
 [assembly: AssemblyProduct("DemeoStripper")]

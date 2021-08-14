@@ -4,25 +4,25 @@ using System.Linq;
 
 namespace DemeoStripper
 {
-    class Program
+    internal static class Program
     {
         internal static string InstallDirectory;
 
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             try
             {
                 if (args.Length > 0 && args[0] != null)
                 {
                     InstallDirectory = Path.GetDirectoryName(args[0]);
-                    if (File.Exists(Path.Combine(InstallDirectory, InstallDir.BeatSaberEXE)) == false)
+                    if (!File.Exists(Path.Combine(InstallDirectory, InstallDir.DemeoExe)))
                     {
-                        throw new Exception();
+                        throw new Exception(Path.Combine(InstallDirectory, InstallDir.DemeoExe));
                     }
                 }
                 else
                 {
-                    Logger.Log("Resolving Beat Saber install directory");
+                    Logger.Log("Resolving Demeo install directory");
                     InstallDirectory = InstallDir.GetInstallDir();
                     if (InstallDirectory == null)
                     {
@@ -30,28 +30,18 @@ namespace DemeoStripper
                     }
                 }
 
-                if (BSIPA.EnsureExists(InstallDirectory) == false)
-                {
-                    Logger.Log("Installed BSIPA");
-                }
-
-                if (BSIPA.IsPatched(InstallDirectory) == false)
-                {
-                    Logger.Log("Patching game with BSIPA");
-                    BSIPA.PatchDir(InstallDirectory);
-                }
-
-                string libsDir = Path.Combine(InstallDirectory, @"Libs");
-                string managedDir = Path.Combine(InstallDirectory, @"Beat Saber_Data\Managed");
+                var monoDir = Path.Combine(InstallDirectory, @"MelonLoader\Dependencies\MonoBleedingEdge.x64");
+                var supportDir = Path.Combine(InstallDirectory, @"MelonLoader\Dependencies\SupportModules");
+                var managedDir = Path.Combine(InstallDirectory, @"demeo_Data\Managed");
 
                 Logger.Log("Resolving Beat Saber version");
-                string version = VersionFinder.FindVersion(InstallDirectory);
+                var version = VersionFinder.FindVersion(InstallDirectory);
 
-                string outDir = Path.Combine(Directory.GetCurrentDirectory(), "stripped", version);
+                var outDir = Path.Combine(Directory.GetCurrentDirectory(), "stripped", version);
                 Logger.Log("Creating output directory");
                 Directory.CreateDirectory(outDir);
 
-                string[] whitelist = new string[]
+                var whitelist = new[]
                 {
                     "IPA.",
                     "TextMeshPro",
@@ -69,14 +59,9 @@ namespace DemeoStripper
                     "VRUI",
                 };
 
-                foreach (string f in ResolveDLLs(managedDir, whitelist))
+                foreach (var f in ResolveDLLs(managedDir, whitelist))
                 {
-                    StripDLL(f, outDir, libsDir, managedDir);
-                }
-
-                foreach (string f in ResolveDLLs(libsDir, whitelist))
-                {
-                    StripDLL(f, outDir, libsDir, managedDir);
+                    StripDLL(f, outDir, managedDir, monoDir, supportDir);
                 }
             }
             catch (Exception ex)
@@ -86,7 +71,7 @@ namespace DemeoStripper
             }
         }
 
-        internal static string[] ResolveDLLs(string managedDir, string[] whitelist)
+        private static string[] ResolveDLLs(string managedDir, string[] whitelist)
         {
             var files = Directory.GetFiles(managedDir).Where(path =>
             {

@@ -36,8 +36,8 @@ namespace DemeoStripper
 
     internal static class LibLoader
     {
-        internal static string LibraryPath => Path.Combine(Program.InstallDirectory, "Libs");
-        internal static string NativeLibraryPath => Path.Combine(LibraryPath, "Native");
+        internal static string LibraryPath => Path.Combine(Program.InstallDirectory, @"MelonLoader\Dependencies");
+        // internal static string NativeLibraryPath => Path.Combine(LibraryPath, "Native");
         internal static Dictionary<string, string> FilenameLocations;
 
         internal static void Configure()
@@ -53,7 +53,7 @@ namespace DemeoStripper
             {
                 FilenameLocations = new Dictionary<string, string>();
 
-                foreach (var fn in TraverseTree(LibraryPath, s => s != NativeLibraryPath))
+                foreach (var fn in TraverseTree(LibraryPath))
                 {
                     if (FilenameLocations.ContainsKey(fn.Name) == false)
                     {
@@ -70,14 +70,14 @@ namespace DemeoStripper
                     }
                 }
 
-                if (Directory.Exists(NativeLibraryPath))
-                {
-                    AddDir(NativeLibraryPath);
-                    TraverseTree(NativeLibraryPath, dir =>
-                    { // this is a terrible hack for iterating directories
-                        AddDir(dir); return true;
-                    }).All(f => true); // force it to iterate all
-                }
+                // if (Directory.Exists(NativeLibraryPath))
+                // {
+                //     AddDir(NativeLibraryPath);
+                //     TraverseTree(NativeLibraryPath, dir =>
+                //     { // this is a terrible hack for iterating directories
+                //         AddDir(dir); return true;
+                //     }).All(f => true); // force it to iterate all
+                // }
 
                 var unityData = Directory.EnumerateDirectories(Program.InstallDirectory, "*_Data").First();
                 AddDir(Path.Combine(unityData, "Plugins"));

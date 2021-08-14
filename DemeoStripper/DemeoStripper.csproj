@@ -44,7 +44,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BSIPA.cs" />
     <Compile Include="InstallDir.cs" />
     <Compile Include="LibLoader.cs" />
     <Compile Include="Logger.cs" />

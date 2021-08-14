@@ -1,5 +1,6 @@
 # 📝 DemeoStripper &nbsp;[![Actions Status](https://github.com/JoeZwet/DemeoStripper/workflows/.NET%20Build/badge.svg)](https://github.com/lolPants/BeatStripper/actions)
 _Generate stripped Demeo DLLs for use in CI_
+I want to at some point make this indipendent of any one specific game
 
 ## 🔧 About
 This program resolves your Demeo install directory, then generates virtualised and stripped DLLs for use in CI. It currently only strips core game and Unity assemblies (feel free to PR the name whitelist if a DLL you need is being ignored).

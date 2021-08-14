@@ -8,7 +8,7 @@ namespace DemeoStripper
     {
         internal static string FindVersion(string installDir)
         {
-            string managersPath = Path.Combine(installDir, @"Beat Saber_Data", @"globalgamemanagers");
+            string managersPath = Path.Combine(installDir, @"demeo_Data", @"globalgamemanagers");
             if (File.Exists(managersPath) == false)
             {
                 throw new FileNotFoundException();
